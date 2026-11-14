@@ -719,13 +719,13 @@ const VARS = [
   { id: 'PRECTOTCORR', theme: 'water', name: 'Precipitation', unit: 'mm/day',
     plain: 'Rain and snow reaching the ground, averaged per day.',
     why: 'Noisy and skewed, so trends need long records — a good test of the statistics.' },
-  { id: 'GWETROOT', theme: 'water', name: 'Root-zone soil wetness', unit: '0–1',
+  { id: 'GWETROOT', unitShort: '', theme: 'water', name: 'Root-zone soil wetness', unit: '0–1',
     plain: 'How wet the top metre of soil is, where plant roots drink. 0 is completely dry, 1 is saturated.',
     why: 'Captures drought better than rainfall alone, because it includes evaporation losses.' },
-  { id: 'GWETTOP', theme: 'water', name: 'Surface soil wetness', unit: '0–1',
+  { id: 'GWETTOP', unitShort: '', theme: 'water', name: 'Surface soil wetness', unit: '0–1',
     plain: 'How wet the top 5 cm of soil is. 0 is completely dry, 1 is saturated.',
     why: 'Reacts fastest to short dry spells and heatwaves.' },
-  { id: 'GWETPROF', theme: 'water', name: 'Deep soil moisture', unit: '0–1',
+  { id: 'GWETPROF', unitShort: '', theme: 'water', name: 'Deep soil moisture', unit: '0–1',
     plain: 'Water stored through the whole soil column, down to bedrock.',
     why: 'Slow-moving, so a trend here means a long-term change in water storage.' },
   { id: 'EVLAND', theme: 'water', name: 'Evaporation from land', unit: 'mm/day',
@@ -765,10 +765,10 @@ const VARS = [
   { id: 'CLRSKY_SFC_SW_DWN', theme: 'sky', name: 'Clear-sky sunlight', unit: 'MJ/m²/day',
     plain: 'Solar energy that would arrive if the sky had no clouds at all.',
     why: 'Compare with the all-sky value to separate cloud effects from haze.' },
-  { id: 'CLOUD_AMT', theme: 'sky', name: 'Cloud cover', unit: '%',
+  { id: 'CLOUD_AMT', theme: 'sky', name: 'Cloud cover', unit: '%', since: 1984,
     plain: 'The share of the sky covered by cloud.',
     why: 'Clouds are one of the biggest uncertainties in climate — are they changing here?' },
-  { id: 'AOD_55', theme: 'sky', name: 'Aerosol optical depth', unit: 'unitless',
+  { id: 'AOD_55', unitShort: '', theme: 'sky', name: 'Aerosol optical depth', unit: 'unitless', since: 2001,
     plain: 'How hazy the air column is with dust, smoke and pollution particles.',
     why: 'Tracks air-quality policy, desert dust and wildfire smoke.' },
   { id: 'ALLSKY_SFC_UVB', theme: 'sky', name: 'UV-B radiation', unit: 'MJ/m²/day',
@@ -776,26 +776,32 @@ const VARS = [
     why: 'Responds to ozone recovery and to changes in cloud and haze.' }
 ];
 
+function unitOf(v) { return v.unitShort !== undefined ? v.unitShort : v.unit; }
+
 const VAR_BY_ID = {};
 for (const v of VARS) VAR_BY_ID[v.id] = v;
 
-/* Worked examples. Each is a real, checked case. */
+/* Worked examples. Every one of these was run against live NASA POWER data
+   while the tool was built, so the stories below are the real results. */
 const DEMOS = [
   { name: 'Santiago is warming',
-    note: 'Air temperature, central Chile, 1981–now',
-    varId: 'T2M', mode: 'point', lat: -33.45, lon: -70.67, y0: 1981, y1: null },
+    note: 'Air temperature at a point, 1981\u2013now',
+    varId: 'T2M', mode: 'point', lat: -33.45, lon: -70.67 },
   { name: 'The Chilean megadrought',
     note: 'Root-zone soil wetness, central Chile',
-    varId: 'GWETROOT', mode: 'point', lat: -34.5, lon: -71.0, y0: 1981, y1: null },
+    varId: 'GWETROOT', mode: 'point', lat: -34.5, lon: -71.0 },
+  { name: 'One region, two directions',
+    note: 'East African rainfall \u2014 the hard case',
+    varId: 'PRECTOTCORR', mode: 'box', lat0: -5, lat1: 5, lon0: 34, lon1: 42 },
+  { name: 'Arctic amplification',
+    note: 'Surface temperature, Barents Sea',
+    varId: 'TS', mode: 'box', lat0: 72, lat1: 79, lon0: 30, lon1: 40 },
   { name: 'Amazon air is drying',
     note: 'Relative humidity, southern Amazonia',
-    varId: 'RH2M', mode: 'point', lat: -10.0, lon: -60.0, y0: 1981, y1: null },
-  { name: 'Arctic amplification',
-    note: 'Surface temperature across the Barents Sea',
-    varId: 'TS', mode: 'box', lat0: 72, lat1: 79, lon0: 30, lon1: 40, y0: 1981, y1: null },
-  { name: 'Sahel rainfall recovery',
-    note: 'Precipitation, a case where noise fights the trend',
-    varId: 'PRECTOTCORR', mode: 'point', lat: 15.0, lon: 0.0, y0: 1981, y1: null }
+    varId: 'RH2M', mode: 'point', lat: -10.0, lon: -60.0 },
+  { name: 'London rain: no trend',
+    note: 'A null result \u2014 which is still a result',
+    varId: 'PRECTOTCORR', mode: 'point', lat: 51.5, lon: -0.12 }
 ];
 
 /* ============================================================
@@ -1172,12 +1178,16 @@ function drawChart(res, which, v) {
   const m = { l: 56, r: 16, t: 14, b: 34 };
   const iw = W - m.l - m.r, ih = H - m.t - m.b;
 
-  let pts, showTrend = true, unitLabel = v.unit;
+  let pts, unitLabel = v.unit;
   if (which === 'raw') { pts = res.raw; }
   else if (which === 'annual') { pts = res.annual; }
   else { pts = res.anomalies; unitLabel = v.unit + ' anomaly'; }
-
   if (!pts.length) return;
+
+  // The headline fit was made on one particular series. Only draw it on that
+  // tab; on the annual tab refit; elsewhere draw no line rather than a wrong one.
+  const fittedTab = res.removeSeason ? 'anom' : 'raw';
+  const showTrend = (which === fittedTab) || (which === 'annual');
 
   const xs = pts.map(function (p) { return p.t; });
   const ys = pts.map(function (p) { return p.value; });
@@ -1186,12 +1196,11 @@ function drawChart(res, which, v) {
 
   // trend line endpoints must fit too
   let tl = null;
-  if (which === 'raw') { showTrend = false; }
   if (showTrend && res.ols) {
     const useAnnual = which === 'annual';
     let slope, intercept, sslope, sintercept;
     if (useAnnual) {
-      const a2 = olsTrend(res.annual, { arCorrection: false });
+      const a2 = olsTrend(res.annual, { arCorrection: true });
       const mk2 = mannKendall(res.annual);
       const s2 = sensSlope(res.annual, { varS: mk2 ? mk2.varS : null });
       slope = a2 ? a2.slope : 0; intercept = a2 ? a2.intercept : 0;
@@ -1249,7 +1258,8 @@ function drawChart(res, which, v) {
 
   // confidence band around the OLS line
   if (tl && isFinite(tl.se) && tl.tc) {
-    let mx = 0; const useP = which === 'annual' ? res.annual : res.anomalies;
+    let mx = 0;
+    const useP = which === 'annual' ? res.annual : res.series;
     for (const p of useP) mx += p.t; mx /= useP.length;
     let sxx = 0; for (const p of useP) sxx += (p.t - mx) * (p.t - mx);
     const band = [];
@@ -1318,18 +1328,21 @@ function drawChart(res, which, v) {
     (tl ? '<span><i style="background:#ff7a4d"></i>least-squares trend</span>' +
       '<span><i style="background:rgba(232,96,60,.5)"></i>95% confidence band</span>' +
       (tl.sslope != null ? '<span><i style="background:#ffd166"></i>Sen’s slope (robust)</span>' : '')
-      : '<span style="color:#6c819f">the trend is fitted to anomalies — switch tabs to see it</span>');
+      : '<span style="color:#6c819f">the trend was fitted to the ' +
+        (res.removeSeason ? 'anomaly' : 'raw') + ' series — switch tabs to see it</span>');
 }
 
 /* ============================================================
    6. APP STATE + RENDERING
    ============================================================ */
 
+function defaultEndYear() { return new Date().getFullYear() - 1; }
+
 const state = {
   theme: 'heat',
   varId: null,
   y0: POWER_START_YEAR,
-  y1: new Date().getFullYear() - 1,
+  y1: defaultEndYear(),
   removeSeason: true,
   result: null,
   chartTab: 'anom',
@@ -1358,7 +1371,8 @@ function renderVars() {
     const b = document.createElement('button');
     b.className = 'var' + (v.id === state.varId ? ' on' : '');
     b.innerHTML = '<span class="vn">' + v.name + ' <span style="color:#6c819f;font-weight:400">(' + v.unit + ')</span></span>' +
-      '<span class="vd">' + v.plain + '</span>';
+      '<span class="vd">' + v.plain +
+      (v.since ? ' <b style="color:#ffc24b">Record starts ' + v.since + '.</b>' : '') + '</span>';
     b.onclick = function () { state.varId = v.id; renderVars(); updateGo(); updateTip(); };
     wrap.appendChild(b);
   }
@@ -1454,6 +1468,9 @@ async function investigate() {
   if (state.busy) return;
   const v = VAR_BY_ID[state.varId];
   if (!v) return;
+  // belt and braces: the API rejects a non-numeric year outright
+  if (!(state.y0 >= POWER_START_YEAR)) state.y0 = POWER_START_YEAR;
+  if (!(state.y1 > state.y0)) state.y1 = defaultEndYear();
   state.busy = true; updateGo();
   $('intro').classList.add('hide');
   map.cells = null; map.cellScale = null;
@@ -1570,7 +1587,7 @@ function showLegend(v, mx) {
   bar.style.background = 'linear-gradient(90deg,' + stops.join(',') + ')';
   $('legMin').textContent = '−' + fmt(mx, '');
   $('legMax').textContent = '+' + fmt(mx, '');
-  $('legMid').textContent = '0 ' + v.unit;
+  $('legMid').textContent = '0 ' + unitOf(v);
 }
 
 /* ---------- result rendering ---------- */
@@ -1585,13 +1602,33 @@ function renderResult(res, v) {
     ? '<span class="badge sig">significant</span>'
     : '<span class="badge nosig">not significant</span>';
 
-  const perDec = (res.perDecade > 0 ? '+' : '') + fmt(res.perDecade, v.unit) + ' /decade';
-  const total = (res.totalChange > 0 ? '+' : '') + fmt(res.totalChange, v.unit);
+  const uu = unitOf(v);
+  const perDec = (res.perDecade > 0 ? '+' : '') + fmt(res.perDecade, uu) + ' /decade';
+  const total = (res.totalChange > 0 ? '+' : '') + fmt(res.totalChange, uu);
 
   let whereCell = res.place;
   let whereSub = res.scope === 'box'
     ? res.nCells + ' grid cells, area-averaged'
     : (res.cellCoords ? 'POWER grid cell centred ' + fmtLat(res.cellCoords.lat) + ', ' + fmtLon(res.cellCoords.lon) : '0.5° × 0.625° grid cell');
+
+  const notes = [];
+  if (res.startYear > state.y0) {
+    notes.push('You asked for ' + state.y0 + '\u2013' + state.y1 +
+      ', but NASA POWER only has this variable from <b>' + res.startYear + '</b>, so the test uses ' +
+      res.startYear + '\u2013' + res.endYear + '.');
+  }
+  if (res.ols.nEff < 12) {
+    notes.push('This series is <b>very strongly autocorrelated</b> (r\u2081 = ' + res.ols.r1.toFixed(2) +
+      '), leaving an effective sample of only <b>' + res.ols.nEff.toFixed(0) +
+      '</b>. Treat the rate and the p-value as rough.');
+  }
+  if (res.years < 15) {
+    notes.push('Only <b>' + res.years.toFixed(0) + ' years</b> of data. Short records make ' +
+      'trends hard to detect; widen the period if you can.');
+  }
+  const noteHtml = notes.length
+    ? '<div class="vsentence" style="background:#1d1a0e;border-top:1px solid #4a3f1a;color:#e8d9a8">\u26A0\uFE0F ' +
+      notes.join(' ') + '</div>' : '';
 
   $('verdict').innerHTML =
     '<div class="vhead"><h2>The verdict</h2>' + badge +
@@ -1608,6 +1645,7 @@ function renderResult(res, v) {
     (sig ? '#3ddc97' : '#ffc24b') + '">' + (sig ? 'Yes' : 'No') + '</div>' +
     '<div class="vs">Mann–Kendall p = ' + fmtP(res.mk ? res.mk.p : NaN) + '</div></div>' +
     '</div>' +
+    noteHtml +
     '<div class="vsentence">' + verdictSentence(res, v) + '</div>';
 
   $('chartTitle').textContent = v.name + ' — ' + res.place;
@@ -1628,8 +1666,8 @@ function verdictSentence(res, v) {
   const v2 = v.name.toLowerCase();
   const rising = res.perDecade > 0;
   const word = rising ? 'rising' : 'falling';
-  const rate = fmt(Math.abs(res.perDecade), v.unit) + ' per decade';
-  const tot = fmt(Math.abs(res.totalChange), v.unit);
+  const rate = fmt(Math.abs(res.perDecade), unitOf(v)) + ' per decade';
+  const tot = fmt(Math.abs(res.totalChange), unitOf(v));
   const yrs = res.years.toFixed(0);
 
   let s = 'Between <b>' + res.startYear + '</b> and <b>' + res.endYear + '</b>, ' + v2 +
@@ -1664,7 +1702,7 @@ function verdictSentence(res, v) {
 }
 
 function renderStats(res, v) {
-  const u = v.unit;
+  const u = unitOf(v);
   const mk = res.mk, ols = res.ols, sen = res.sen;
   const pc = function (p) { return '<span class="pv ' + (p < 0.05 ? 'sig' : 'nosig') + '">' + fmtP(p) + '</span>'; };
 
@@ -1735,8 +1773,8 @@ function renderStats(res, v) {
 async function runDemo(d) {
   state.varId = d.varId;
   for (const v of VARS) if (v.id === d.varId) state.theme = v.theme;
-  state.y0 = d.y0;
-  state.y1 = d.y1 || (new Date().getFullYear() - 1);
+  state.y0 = d.y0 || POWER_START_YEAR;
+  state.y1 = d.y1 || defaultEndYear();
   $('y0').value = state.y0; $('y1').value = state.y1;
   if (d.mode === 'point') {
     map.mode = 'point'; map.pin = { lat: d.lat, lon: d.lon }; map.box = null;
