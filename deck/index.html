@@ -177,13 +177,14 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
     </div>
     <div style="align-self:center;margin-top:-22px">
       <h1>Earth System<br>Trend <i>Detective</i></h1>
-      <div class="sub">A tool for finding real change in NASA Earth science data &mdash;
-        and for telling the difference between a trend and a coincidence.</div>
+      <div class="sub">A browser tool for testing whether a NASA Earth science variable is
+        changing at a chosen location, and whether that change is large enough to be
+        distinguished from ordinary year-to-year variability.</div>
     </div>
     <div class="mid">
       <div class="meta">
         INVESTIGATOR &nbsp;<b>PAULINA ROSALES PONCE</b><br>
-        EVENT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>[ YOUR LOCAL EVENT ]</b><br>
+        EVENT &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>UNIVERSAL EVENT</b><br>
         EVIDENCE &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>NASA POWER &middot; MERRA-2 &middot; 1981&ndash;2025</b>
       </div>
       <div class="meta">
@@ -199,27 +200,33 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
 <section class="slide">
   <div class="filetab"></div>
   <div class="lab">The problem</div>
-  <hr class="rule dark" style="margin:12px 0 30px">
-  <h2 class="q">Something is changing.<br><span class="hl">Can you prove it?</span></h2>
+  <hr class="rule dark" style="margin:12px 0 28px">
+  <h2 class="q">Detecting change in Earth system data is <span class="hl">harder than it looks</span></h2>
   <div class="twocol">
     <div class="body">
-      <p>NASA measures hundreds of Earth system variables, going back decades. The data
-        is public. Almost nobody uses it to answer their own questions.</p>
-      <p>Two things get in the way. There are far too many variables to know where to
-        begin. And the same variable can be rising in one place while it falls two
-        hundred kilometres away, so one number for a region can quietly average a real
-        story down to nothing.</p>
-      <p>Then there is the part people skip: a line that slopes downward is not a
-        finding. Noise slopes too. Somebody has to test it.</p>
+      <p>NASA has published decades of Earth system measurements and the data is freely
+        available, yet relatively little of it is examined by anyone outside a research
+        institution. One reason is simply the number of variables on offer, which makes it
+        difficult to know which of them bears on a particular question.</p>
+      <p>A second reason is spatial. Because a variable can be increasing in one part of a
+        region while it decreases in another, a single regional average may conceal two
+        opposing signals that happen to cancel, and the resulting figure will describe
+        neither of them.</p>
+      <p>There is also a statistical difficulty that is easy to overlook, which is that a
+        sloping line fitted to a noisy record is not in itself evidence of change. Random
+        variation produces sloping lines as a matter of course, so any claim of a trend has
+        to be tested before it can be relied on.</p>
     </div>
     <div class="aside">
-      <div class="lab" style="margin-bottom:12px">What it takes today</div>
+      <div class="lab" style="margin-bottom:12px">What this currently involves</div>
       <div class="note">
-        Register for an Earthdata account. Work out which of 100+ collections you need.
-        Download. Subset. Learn enough statistics to know that monthly data breaks the
-        test you were about to run.<br><br>
-        That is a weekend of work before you see a single answer, and most people
-        stop long before the statistics.
+        Answering a question of this kind today generally means registering for an Earthdata
+        account, identifying the relevant collection among more than a hundred, downloading
+        and subsetting the files, and then knowing enough statistics to recognise that
+        monthly observations violate the independence assumption of the test most people
+        would reach for first.<br><br>
+        That is a weekend of work before the first answer appears, and in practice most
+        people stop well before the statistics.
       </div>
     </div>
   </div>
@@ -230,39 +237,46 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
 <section class="slide">
   <div class="filetab"></div>
   <div class="lab">The method</div>
-  <hr class="rule dark" style="margin:12px 0 22px">
-  <h2 style="font-size:40px;font-weight:400;margin:0;letter-spacing:-.02em">Three clicks, in a browser.</h2>
+  <hr class="rule dark" style="margin:12px 0 20px">
+  <h2 style="font-size:36px;font-weight:400;margin:0;letter-spacing:-.02em">
+    The tool reduces the task to three steps, all carried out in a browser.</h2>
   <div class="steps">
     <div class="stp">
       <div class="n">01</div>
-      <h3>Pick a variable</h3>
-      <p>Twenty-five of them, grouped by what you are curious about rather than by which
-        instrument produced them. Each one explained in a single plain sentence:
-        <em class="pen">&ldquo;How wet the top metre of soil is, where plant roots drink.&rdquo;</em></p>
+      <h3>Choose a variable</h3>
+      <p>Twenty-five variables are grouped by subject rather than by the instrument or model
+        that produced them, since someone investigating drought is unlikely to know which
+        product contains soil moisture. Each carries a definition in ordinary language, so
+        that root-zone soil wetness is introduced as the water available to plants in the
+        top metre of soil.</p>
     </div>
     <div class="stp">
       <div class="n">02</div>
-      <h3>Pick a place</h3>
-      <p>Click a point on the map, or drag a box. A box is not averaged into one answer
-        &mdash; every NASA grid cell inside it is tested separately, so disagreement
-        between neighbours stays visible.</p>
+      <h3>Choose a place</h3>
+      <p>A location is given either as a single point or as a box of up to ten degrees on a
+        side. Where a box is used, every NASA grid cell within it is analysed on its own
+        rather than averaged into one figure, so that disagreement between neighbouring
+        cells stays visible instead of cancelling out.</p>
     </div>
     <div class="stp">
       <div class="n">03</div>
       <h3>Read the verdict</h3>
-      <p>What is changing, where, how much per decade, and whether three independent
-        statistical tests are willing to call it real. Plain English first. The full
-        numbers underneath.</p>
+      <p>The result appears first as a statement in ordinary language giving the variable,
+        the place, the rate of change per decade and whether that change is statistically
+        significant, with the full set of test statistics set out beneath it for anyone who
+        wants to examine how the conclusion was reached.</p>
     </div>
   </div>
   <div class="stripfoot">
-    <span>LIVE DATA &mdash; NOT A CACHED COPY</span>
-    <span>NASA POWER &middot; MERRA-2 &middot; 45 YEARS OF MONTHLY VALUES</span>
-    <span>NO LOGIN &middot; NO DOWNLOAD &middot; NO INSTALL</span>
+    <span>DATA REQUESTED FROM NASA POWER AT THE MOMENT OF THE QUERY</span>
+    <span>MONTHLY VALUES, 1981 TO PRESENT</span>
+    <span>RUNS ENTIRELY IN THE BROWSER</span>
   </div>
-  <div class="note" style="margin-top:20px">
-    One HTML file. No frameworks, no build step, no libraries. It loads in under a second
-    and there is nothing in it that can break when somebody else's package updates.
+  <div class="note" style="margin-top:18px">
+    The tool is a single HTML file written in plain JavaScript, and it was built that way
+    deliberately: there is no build step for anyone to reproduce and no external library
+    that can change beneath it, so the page should keep working unaltered for as long as
+    the NASA POWER API does.
   </div>
   <div class="pageno">3 / 7</div>
 </section>
@@ -270,10 +284,10 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
 <!-- ============ 4 ============ -->
 <section class="slide">
   <div class="filetab"></div>
-  <div class="lab">Evidence &mdash; exhibit A</div>
+  <div class="lab">Worked example &mdash; exhibit A</div>
   <hr class="rule dark" style="margin:12px 0 18px">
-  <h2 style="font-size:36px;font-weight:400;margin:0 0 4px;letter-spacing:-.02em">
-    The Chilean megadrought, measured.</h2>
+  <h2 style="font-size:35px;font-weight:400;margin:0 0 4px;letter-spacing:-.02em">
+    The Chilean megadrought, as the tool reports it.</h2>
   <div class="evwrap">
     <div class="card">
       <div class="ch"><span class="t">Verdict</span><span class="yes">Significant</span></div>
@@ -291,17 +305,22 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
           <small>Mann&ndash;Kendall, on 540 deseasonalised monthly values</small></div></div>
     </div>
     <div>
-      <div class="lab" style="margin-bottom:12px">Reading it</div>
+      <div class="lab" style="margin-bottom:12px">Reading the result</div>
       <div class="body" style="font-size:16px">
-        <p>Soil in central Chile has been drying for forty-five years, steadily enough
-          that the pattern would appear by chance less than once in ten thousand times.</p>
-        <p>The seasonal cycle is removed first. In Santiago the swing between summer and
-          winter is about 14&nbsp;&deg;C, while the trend is 0.17&nbsp;&deg;C per decade.
-          Leave the seasons in and the trend is invisible underneath them.</p>
+        <p>Soil moisture in central Chile has declined steadily across the full forty-five
+          years of record, and the Mann&ndash;Kendall test puts the probability of a pattern
+          this consistent arising in data with no underlying trend at below one in ten
+          thousand.</p>
+        <p>The seasonal cycle is removed before any test is applied, because it would
+          otherwise dominate the record. In Santiago the difference between summer and
+          winter is around fourteen degrees while the trend is 0.17&nbsp;&deg;C per decade,
+          so a trend of that size is entirely hidden inside the annual cycle until the
+          cycle is subtracted.</p>
       </div>
       <div class="note" style="margin-top:14px">
-        Five more worked cases are built into the tool, each one click. Every number
-        quoted here came out of the live tool, not out of a paper.
+        Five further worked examples are built into the tool. Every figure quoted in this
+        presentation was produced by the tool itself from live data, rather than taken from
+        published literature.
       </div>
     </div>
   </div>
@@ -311,56 +330,62 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
 <!-- ============ 5 ============ -->
 <section class="slide">
   <div class="filetab"></div>
-  <div class="lab">Method note &mdash; the part that is easy to get wrong</div>
-  <hr class="rule dark" style="margin:12px 0 20px">
+  <div class="lab">Method note &mdash; the correction that matters most</div>
+  <hr class="rule dark" style="margin:12px 0 18px">
   <div class="twocol" style="grid-template-columns:1.05fr .95fr;gap:50px;margin-top:0">
     <div>
-      <h2 style="font-size:33px;font-weight:400;margin:0 0 14px;letter-spacing:-.02em;line-height:1.2">
-        A warm month tends to follow a warm month.</h2>
-      <div class="body" style="font-size:16.5px">
-        <p>So 540 monthly measurements are not 540 independent pieces of evidence. Treat
-          them as if they were, and the test becomes far too easy to pass &mdash; almost
-          any wiggle comes back significant.</p>
-        <p>The tool measures how strongly each month predicts the next, then cuts the
-          sample size to match. For Amazon humidity that means throwing away most of
-          the apparent evidence before testing:</p>
+      <h2 style="font-size:30px;font-weight:400;margin:0 0 14px;letter-spacing:-.02em;line-height:1.24">
+        Consecutive months are not independent observations.</h2>
+      <div class="body" style="font-size:16px">
+        <p>Because conditions in one month are correlated with those in the month before,
+          a record of 540 monthly values does not carry 540 independent pieces of evidence
+          about the underlying trend. Testing it as though it did understates the standard
+          error, with the result that almost any fluctuation is returned as significant.</p>
+        <p>The tool therefore estimates the lag-1 autocorrelation of the regression
+          residuals and reduces the sample size to match, following the effective sample
+          size approach of Santer et al. (2000). For Amazon relative humidity this discards
+          most of the apparent evidence before the test is applied:</p>
       </div>
       <div class="bignum">
         <span class="a">540</span>
         <span class="arrow">&rarr;</span>
         <span class="b">76</span>
       </div>
-      <div class="lab">effective sample size, after correction</div>
-      <div class="note" style="margin-top:16px">
-        The trend survives. Plenty of others do not, and they should not.
-        The tool shows this discount on screen rather than hiding it, and warns you
-        when what is left is too small to trust.
+      <div class="lab">effective sample size after correction</div>
+      <div class="note" style="margin-top:14px">
+        The Amazon trend remains significant once corrected, which is precisely what the
+        correction is for: it removes the trends that were products of the method rather
+        than of the data. Both r&#8321; and the corrected sample size are shown on screen,
+        and the tool warns when what remains is too small to carry weight.
       </div>
     </div>
     <div>
-      <div class="lab" style="margin-bottom:10px">Three tests, run on every series</div>
+      <div class="lab" style="margin-bottom:10px">Three tests, applied to every series</div>
       <div class="tests" style="grid-template-columns:1fr;gap:11px;margin-top:0">
         <div class="tcard">
           <h4>Least squares, with a t-test</h4>
-          <p>Fits the best straight line. Gives the rate of change and a 95% confidence
-            interval. Assumes a line, and roughly normal scatter around it.</p>
+          <p>Fits a straight line by minimising squared residuals and reports the rate of
+            change with a 95% confidence interval, on the assumption that the change is
+            linear and the residuals approximately normal.</p>
         </div>
         <div class="tcard">
           <h4>Mann&ndash;Kendall</h4>
-          <p>Assumes nothing about shape or distribution. Only asks whether later values
-            tend to beat earlier ones. This is the one to trust on rainfall.</p>
+          <p>A rank-based test that assumes nothing about the shape of the trend or the
+            distribution of the data, asking only whether later values tend to exceed
+            earlier ones, which makes it the more dependable test for a skewed variable
+            such as precipitation.</p>
         </div>
         <div class="tcard">
           <h4>Theil&ndash;Sen slope</h4>
-          <p>The median of every pairwise slope in the record. A handful of freak months
-            cannot drag it around.</p>
+          <p>Estimates the slope as the median of every pairwise slope in the record, so
+            that a small number of extreme months cannot displace the estimate.</p>
         </div>
       </div>
       <div class="verif">
         VERIFIED AGAINST SciPy AND pymannkendall<br>
         six synthetic series &middot; clean trend, pure noise, skewed and tied data,<br>
         short record, heavy autocorrelation, missing values<br>
-        <b>agreement to 1&times;10<sup>&minus;9</sup></b> &middot; two real defects found and fixed this way
+        <b>agreement to 1&times;10<sup>&minus;9</sup></b> &middot; two defects found and corrected this way
       </div>
     </div>
   </div>
@@ -370,8 +395,8 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
 <!-- ============ 6 ============ -->
 <section class="slide">
   <div class="filetab"></div>
-  <div class="lab">Evidence &mdash; exhibit B &mdash; why one number is not enough</div>
-  <hr class="rule dark" style="margin:12px 0 16px">
+  <div class="lab">Worked example &mdash; exhibit B &mdash; why a regional average is not enough</div>
+  <hr class="rule dark" style="margin:12px 0 14px">
   <div class="maplay">
     <div>
       <div class="figbox">
@@ -381,32 +406,34 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
         RINGED = SIGNIFICANT AT p &lt; 0.05 &middot; COLOUR SCALE CLIPPED AT &plusmn;0.45 mm/day/decade</div>
     </div>
     <div>
-      <h2 style="font-size:33px;font-weight:400;margin:0 0 6px;letter-spacing:-.02em;line-height:1.22">
-        One region. One variable.<br>Both directions at once.</h2>
+      <h2 style="font-size:30px;font-weight:400;margin:0 0 8px;letter-spacing:-.02em;line-height:1.24">
+        Within one region, the trend runs in both directions at once.</h2>
       <div class="tally">
         <div class="tl">
           <span class="dot" style="background:rgb(205,96,54)"></span>
           <span class="cnt">88</span>
-          <span class="txt">grid cells where rainfall is rising, <b>significantly</b></span>
+          <span class="txt">cells where rainfall is rising, significantly</span>
         </div>
         <div class="tl">
           <span class="dot" style="background:rgb(62,120,166)"></span>
           <span class="cnt">29</span>
-          <span class="txt">grid cells where rainfall is falling, <b>significantly</b></span>
+          <span class="txt">cells where rainfall is falling, significantly</span>
         </div>
         <div class="tl" style="border-bottom:0">
           <span class="dot" style="background:#efe9db;border-color:#c6bfb1"></span>
           <span class="cnt">156</span>
-          <span class="txt">cells where the record is still too noisy to call</span>
+          <span class="txt">cells where the record remains too noisy to call either way</span>
         </div>
       </div>
       <div class="punch">
-        Average the whole box and you get <b class="num">+0.107&nbsp;mm/day</b> per decade
-        &mdash; a single mild number that describes almost none of the cells it came from.
+        Averaged across the whole box the trend is <b class="num">+0.107&nbsp;mm/day</b> per
+        decade, and that figure is itself significant, but it describes the behaviour of
+        very few of the cells it was computed from, since it combines strong increases in
+        the west with significant decreases running through the centre and east.
       </div>
-      <div class="note" style="margin-top:18px">
-        This is the complication the challenge is named after, and it is the reason the
-        tool tests every cell on its own instead of handing back one regional average.
+      <div class="note" style="margin-top:16px">
+        This is the difficulty the challenge takes its name from, and it is the reason the
+        tool tests every grid cell separately instead of returning one regional figure.
       </div>
     </div>
   </div>
@@ -417,29 +444,31 @@ b.num{font-family:var(--mono);font-weight:700;font-variant-numeric:tabular-nums}
 <section class="slide">
   <div class="filetab"></div>
   <div class="lab">Closing note</div>
-  <hr class="rule dark" style="margin:12px 0 26px">
+  <hr class="rule dark" style="margin:12px 0 24px">
   <div class="closegrid">
     <div>
       <div class="lab" style="margin-bottom:10px">London rainfall, 1981&ndash;2025</div>
       <div class="pval">p = 0.51</div>
       <div style="margin-top:14px"><span class="no">Not significant</span></div>
-      <div class="body" style="font-size:16.5px;margin-top:22px">
-        <p>Rain in London is up very slightly over forty-five years. The tool refuses to
-          call it a trend, and says so in as many words.</p>
+      <div class="body" style="font-size:16px;margin-top:20px">
+        <p>Rainfall in London has risen very slightly over forty-five years, but a p-value
+          of 0.51 means a record this noisy would produce a pattern at least this strong
+          about half the time even if nothing were changing at all.</p>
       </div>
     </div>
     <div>
-      <h2 style="font-size:34px;font-weight:400;margin:0 0 16px;letter-spacing:-.02em;line-height:1.25">
-        A tool that always finds something is not a detective.</h2>
-      <div class="body" style="font-size:16.5px">
-        <p>Finding nothing is a result. Sometimes a trend is real and the record is
-          simply not long enough yet to prove it, and saying that plainly is more useful
-          than a confident answer that will not hold.</p>
-        <p>That is the habit this is built to teach: remove the seasons, run more than
-          one test, discount evidence that is not independent, and accept the answer you
-          get.</p>
+      <h2 style="font-size:31px;font-weight:400;margin:0 0 16px;letter-spacing:-.02em;line-height:1.26">
+        A negative result is still a result, and the tool reports it as one.</h2>
+      <div class="body" style="font-size:16px">
+        <p>A trend may well be present and simply not yet detectable in forty-five years of
+          data, and saying so is more useful than returning a confident answer that a longer
+          record would overturn.</p>
+        <p>The habits the tool is meant to encourage follow from that: remove the seasonal
+          cycle before looking for a trend, apply more than one test rather than trusting a
+          single p-value, discount observations that are not independent of one another, and
+          accept the answer that comes out.</p>
       </div>
-      <hr class="rule" style="margin:22px 0 14px">
+      <hr class="rule" style="margin:20px 0 12px">
       <div class="links">
         TRY IT &nbsp;&nbsp;&nbsp;&nbsp;<a href="https://paulinarosalesponce.github.io/earth-system-trend-detective/">paulinarosalesponce.github.io/earth-system-trend-detective</a><br>
         SOURCE &nbsp;&nbsp;<a href="https://github.com/paulinarosalesponce/earth-system-trend-detective">github.com/paulinarosalesponce/earth-system-trend-detective</a><br>
