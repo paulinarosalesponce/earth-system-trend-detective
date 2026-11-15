@@ -8,7 +8,7 @@ place on the map, and get a statistically defensible answer to four questions:
 > **What** is changing · **where** is it changing · **how much** is it changing ·
 > and is the change **significant**?
 
-**▶ Live tool:** _(add your GitHub Pages URL here)_
+**▶ Live tool:** _https://paulinarosalesponce.github.io/earth-system-trend-detective/_
 
 ---
 
