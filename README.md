@@ -8,7 +8,7 @@ place on the map, and get a statistically defensible answer to four questions:
 > **What** is changing · **where** is it changing · **how much** is it changing ·
 > and is the change **significant**?
 
-**▶ Live tool:** _https://paulinarosalesponce.github.io/earth-system-trend-detective/_
+**▶ Live tool:** _(add your GitHub Pages URL here)_
 
 ---
 
@@ -104,9 +104,11 @@ branch → main / root**.
 ## Technical notes
 
 - Vanilla HTML, CSS and JavaScript. No frameworks, no bundler, no CDN.
-- The world map is drawn on `<canvas>` in an equirectangular projection from a
-  simplified coastline embedded in the file, so the map works with no tile server
-  and no external request.
+- The world map is drawn on `<canvas>` in an equirectangular projection. Coastlines,
+  country borders and ~19,600 populated places are embedded in the file in a packed
+  base-36 encoding, so the map works with no tile server and makes no request to any
+  server other than NASA POWER. City names appear progressively as you zoom, and a
+  search box finds any listed place by name (accents optional).
 - Charts are generated as inline SVG.
 - Per-cell analysis skips Theil–Sen (its O(n² log n) sort is too slow for hundreds of
   cells) and uses OLS + Mann–Kendall; a 10° × 10° box of 357 cells analyses in
@@ -135,4 +137,5 @@ See `SI_DISCLOSURE.md`.
 - Sen, P.K. (1968), *Estimates of the regression coefficient based on Kendall's tau*, JASA, 63, 1379–1389.
 - Gilbert, R.O. (1987), *Statistical Methods for Environmental Pollution Monitoring*, Van Nostrand Reinhold. (Sen's slope confidence interval.)
 - Santer, B.D. et al. (2000), *Statistical significance of trends and trend differences in layer-average atmospheric temperature time series*, JGR, 105, 7337–7356. (Effective sample size.)
-- World coastline outline derived from Natural Earth via the `world-atlas` package (public domain).
+- World coastlines and country borders derived from Natural Earth via the `world-atlas` package (public domain).
+- Town and city names from [GeoNames](https://www.geonames.org/), licensed CC BY 4.0, via the `all-the-cities` package (MIT). Limited to places above ~20,000 inhabitants.
