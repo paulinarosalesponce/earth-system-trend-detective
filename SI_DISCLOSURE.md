@@ -3,10 +3,6 @@
 NASA Space Apps requires teams to state clearly where and how SI tools were used.
 This is a complete account for this project.
 
-> **Please review and edit this file before submitting** so that it describes your own
-> process accurately. It is a draft based on how the work actually ran, but you are the
-> only person who can confirm it.
-
 ## Tool used
 
 **Claude (Anthropic)**, used through the Claude desktop application, as a coding and
