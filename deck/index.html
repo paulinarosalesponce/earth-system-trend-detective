@@ -1,0 +1,128 @@
+# Project Demo — 7-slide outline
+
+Space Apps allows **either** a 7-slide deck (title and intro slides included) **or** a
+video of 30 seconds or less. A deck is the safer choice for a one-person team: no
+recording, no subtitles, and judges can read it at their own pace.
+
+Once the tool is live I can build this as an actual deck. This is the content.
+
+**Rules to respect:** 7 slides maximum. English. Hosted somewhere public with no login.
+No NASA logos or mission identifiers.
+
+---
+
+## Slide 1 — Title
+
+**Earth System Trend Detective**
+What is changing, where, how much — and is it significant?
+
+NASA Space Apps Challenge 2026 · *Be An Earth System Trend Detective!*
+**[Your name] · [Your local event]**
+**[live URL]**
+
+*Visual: a screenshot of the tool with the East Africa box analysed — red and blue
+dots side by side.*
+
+---
+
+## Slide 2 — The problem
+
+NASA measures hundreds of Earth system variables. Two things stop people from finding
+real change in them:
+
+1. **Too many variables.** Where do you even start?
+2. **Trends disagree with themselves.** The same variable rises in one place and falls
+   a few hundred kilometres away — so one global number hides the story.
+
+And a trend is not a result until someone has tested it.
+
+*Visual: the East Africa dot map — red and blue cells inside one box.*
+
+---
+
+## Slide 3 — The tool, in three clicks
+
+**1. Pick a variable** — 25 of them, grouped by curiosity, each explained in one
+plain sentence.
+**2. Pick a place** — click a point, or drag a box.
+**3. Read the verdict** — what, where, how much, significant or not.
+
+Live NASA POWER data, 1981 to now. No login, no download, no install.
+
+*Visual: the three-step panel plus the verdict card.*
+
+---
+
+## Slide 4 — What it actually answers
+
+Screenshot of the verdict card, with the four cells labelled:
+
+| | |
+|---|---|
+| **WHAT** | Root-zone soil wetness |
+| **WHERE** | 34.50°S, 71.00°W — central Chile |
+| **HOW MUCH** | ↓ 0.020 per decade · −0.088 over 45 years |
+| **SIGNIFICANT?** | Yes — Mann–Kendall p < 0.0001 |
+
+Plain English first. The full statistics underneath.
+
+---
+
+## Slide 5 — The statistics, done honestly
+
+Three independent tests on every series:
+**least squares + t-test** · **Mann–Kendall** · **Theil–Sen slope**
+
+**And the correction most tools skip.** A warm month follows a warm month, so 540
+monthly values are not 540 independent pieces of evidence. We measure the lag-1
+autocorrelation and cut the sample to an effective n — for Amazon humidity, 540 becomes
+76 — then test against *that*. The tool shows the discount instead of hiding it.
+
+Verified against SciPy and pymannkendall: agreement to 1 × 10⁻⁹.
+
+*Visual: the statistics panel with the n_eff note highlighted.*
+
+---
+
+## Slide 6 — The hard case, made visible
+
+**East African rainfall, 1981–2025.** One box. 273 NASA grid cells.
+
+- **88 cells rising significantly**
+- **29 cells falling significantly**
+
+A single regional average would have called this "no change." Testing every cell
+separately shows what is really happening — and that is the whole point of the
+challenge.
+
+*Visual: the East Africa map, zoomed, with the cell-count chips.*
+
+---
+
+## Slide 7 — Finding nothing is a finding
+
+**London rainfall, 1981–2025: p = 0.51. Not significant.**
+
+The tool says so plainly, and explains that some trends only emerge with a longer
+record. A tool that always finds a trend is not a detective — it is a rubber stamp.
+
+Built with vanilla HTML, CSS and JavaScript in one file. No frameworks, no build step.
+Open the source, change a variable, run it yourself.
+
+**[live URL]** · **[repo URL]**
+
+---
+
+## If you prefer the 30-second video
+
+Screen-record this, no narration needed, with short captions:
+
+| Time | Action |
+|---|---|
+| 0:00–0:04 | Tool loads. Caption: *"What's changing on Earth — and can you prove it?"* |
+| 0:04–0:10 | Click "The Chilean megadrought". Verdict appears. Caption: *"Live NASA data, 1981–now."* |
+| 0:10–0:16 | Scroll to the chart, switch to Annual means. Caption: *"Seasonal cycle removed. Trend fitted."* |
+| 0:16–0:24 | Click "One region, two directions". Dots appear, red and blue. Caption: *"88 cells rising, 29 falling — in one region."* |
+| 0:24–0:30 | Scroll to the statistics panel. Caption: *"Three tests. Honest p-values. Try it: [URL]"* |
+
+Remember: if you speak in Spanish, English subtitles are **required**.
